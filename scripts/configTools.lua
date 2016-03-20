@@ -1,10 +1,11 @@
 --[[ PUBLIC stuff ]]
 function cfgt_getVersionString(version)
 	if version == nil then return "version: unkown" end
-	local version_prime = math.floor(version)
-	local version_second = (version-version_prime)*10
-	local version_third = (version_second- math.floor(version_second))*10
-	return string.format("version: %d.%d.%d", version_prime, math.floor(version_second), version_third )
+	local cent = version * 100
+	version_prime = cent / 100
+	version_second = (cent % 100) / 10
+	version_third = cent % 10
+	return string.format("version: %d.%d.%d", version_prime, version_second, version_third )
 end
 
 function cfgt_check_global_cfg()
