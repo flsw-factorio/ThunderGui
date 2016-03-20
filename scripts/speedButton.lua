@@ -1,17 +1,17 @@
 --[[ speedFrame actions ]]
 local function create_speedFrame(player, playerindex)
-	local myFrame = player.gui.left.add({ type="frame", name= "tfrSpeed", 
+	local myFrame = player.gui.left.add({ type="frame", name= "tfrSpeed",
 		caption = "Speed: ", style="tms_frame_compact", direction="horizontal" })
-	if game.speed <= 10 then 
+	if game.speed <= 10 then
 		myFrame.caption = string.format("Speed: %d%%", game.speed*100 )
 	else
 		myFrame.caption = string.format("Speed: 100%% * %g", game.speed )
 	end
-	myFrame.style.bottompadding = 4
+	myFrame.style.bottom_padding = 4
 
-	if ( playerindex == 1 ) or ( not glob.cfg.safeMultiplayerMode and playerindex > 1 ) then
+	if ( playerindex == 1 ) or ( not global.cfg.safeMultiplayerMode and playerindex > 1 ) then
 		--$$ create buttons
-		local myFlow = myFrame.add({type= "flow", style= "tms_flow_compact" })	
+		local myFlow = myFrame.add({type= "flow", style= "tms_flow_compact" })
 		local myElement = myFlow.add({type= "button", name= "tbnSpdSlow", caption= "||<", style= "tms_buttonAlpha" })
 		myElement = myFlow.add({type= "button", name= "tbnSpdDown", caption= "<<", style= "tms_buttonAlpha" })
 		myElement = myFlow.add({type= "button", name= "tbnSpdNormal", caption= "normal", style= "tms_buttonAlpha" })
@@ -19,7 +19,7 @@ local function create_speedFrame(player, playerindex)
 		myElement = myFlow.add({type= "button", name= "tbnSpdXUp", caption= ">>>", style= "tms_buttonAlpha" })
 	end
 
-	glob.speedFrame_open[playerindex] = true
+	global.speedFrame_open[playerindex] = true
 end
 
 local function speedButton_changeCaption(player, caption)
@@ -36,10 +36,10 @@ local function speedButton_changeCaption(player, caption)
 end
 
 local function speedFrame_openClose(player, playerindex)
-	if player.gui.left.tfrSpeed then 
+	if player.gui.left.tfrSpeed then
 		--$$close
 		player.gui.left.tfrSpeed.destroy()
-		glob.speedFrame_open[playerindex] = false
+		global.speedFrame_open[playerindex] = false
 		speedButton_changeCaption(player, "Speed +")
 	else
 		--$$open
@@ -60,23 +60,23 @@ local function tf_close_speedFrame(player, playerindex)
 		player.gui.left.tfrSpeed.destroy()
 	end
 	speedButton_changeCaption(player, "Speed +")
-	glob.speedFrame_open[playerindex] = false
+	global.speedFrame_open[playerindex] = false
 end
 
 --[[ PUBLIC stuff ]]
 function speedButton_updateFrame()
 	for playerindex, player in pairs(game.players) do
 		--$$ update caption
-		if player.gui.left.tfrSpeed and glob.speedFrame_open[playerindex] then
+		if player.gui.left.tfrSpeed and global.speedFrame_open[playerindex] then
 			local myFrame = player.gui.left.tfrSpeed
-			if game.speed <= 10 then 
+			if game.speed <= 10 then
 				myFrame.caption = string.format("Speed: %d%%", game.speed*100 )
 			else
 				myFrame.caption = string.format("Speed: 100%% * %g", game.speed )
 			end
 		end
 	end
-end 
+end
 
 function tf_speedButton_remove(player, playerindex)
 	stg_destroyActionElement(player, "tbnSpeed")
@@ -87,7 +87,7 @@ function tf_speedButton_remove(player, playerindex)
 end
 
 function tf_speedButton_create(player, playerindex)
-	local cfg = glob.playerCfg[playerindex]
+	local cfg = global.playerCfg[playerindex]
 	--$$ button
 	if cfg and cfg.showSpeedButton then
 		local stGui = player.gui.top.superTopGui
@@ -96,10 +96,10 @@ function tf_speedButton_create(player, playerindex)
 		end
 	end
 	--$$ frame
-	if not glob.speedFrame_open then
-		glob.speedFrame_open = {}
-		glob.speedFrame_open[playerindex] = false
-	elseif glob.speedFrame_open[playerindex] then
+	if not global.speedFrame_open then
+		global.speedFrame_open = {}
+		global.speedFrame_open[playerindex] = false
+	elseif global.speedFrame_open[playerindex] then
 		speedFrame_openRenew(player, playerindex)
 	end
 end
@@ -107,7 +107,7 @@ end
 function tf_speedButton_onguiclick(event)
 
 	if event.element.name == "tbnSpeed" then
-		local playerindex = event.playerindex
+		local playerindex = event.player_index
 		--local player = game.players[playerindex]
 		speedFrame_openClose(game.players[playerindex], playerindex)
 	elseif event.element.name == "tbnSpdNormal" then
@@ -129,7 +129,7 @@ function tf_speedButton_onguiclick(event)
 			game.speed = 0.1
 		end
 		speedButton_updateFrame()
-	else 
+	else
 		return false
 	end
 	return true

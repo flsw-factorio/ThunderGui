@@ -7,7 +7,7 @@ function tf_clockDisplay_remove(player, playerindex)
 end
 
 function tf_clockDisplay_create(player, playerindex)
-	local cfg = glob.playerCfg[playerindex]
+	local cfg = global.playerCfg[playerindex]
  	if not cfg or not cfg.showClock or not player.gui.top.superTopGui then return end
 	local myFlow = player.gui.top.superTopGui.stg_infoPanel.add({type= "flow", name= "clockDisp", style= "tms_flow_compact", direction= "vertical" })
 
@@ -26,7 +26,7 @@ function tf_clockDisplay_update(player, playerindex)
 	local myFlow = player.gui.top.superTopGui.stg_infoPanel.clockDisp
 	local time_normal = game.daytime*24
 	--$$ flip time around, 0.5 is midnight ugh
-	if time_normal > 12 then 
+	if time_normal > 12 then
 		time_normal = time_normal - 12
 	else
 		time_normal = time_normal + 12
@@ -38,13 +38,13 @@ function tf_clockDisplay_update(player, playerindex)
 	local run_time_hours = math.floor(run_time_minutes/60)
 	local run_time_days = math.floor(run_time_hours/24)
 	run_time_hours = run_time_hours % 24
-	if run_time_hours > 0 then 
+	if run_time_hours > 0 then
 		local days = ""
-		if run_time_days > 0 then 
-			if run_time_days > 1 then 
-				days = string.format("%d days,", run_time_days) 
+		if run_time_days > 0 then
+			if run_time_days > 1 then
+				days = string.format("%d days,", run_time_days)
 			else
-				days = "1 day," 
+				days = "1 day,"
 			end
 		end
 
@@ -65,7 +65,7 @@ function tf_clockDisplay_update(player, playerindex)
 		myFlow.tdlGame.caption = string.format(
 				"game time %2d:%2d",
 				math.floor(time_normal),
-				raw_mins - raw_mins % glob.cfg.clock_gt_minuteRounding_Value )
+				raw_mins - raw_mins % global.cfg.clock_gt_minuteRounding_Value )
 	--]]
 end
 

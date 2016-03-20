@@ -7,13 +7,13 @@ local mySeperator = ", "
 function transform_keys_to_labels(myTable, tableName, guiFrame)
 	if myTable and tableName and guiFrame and type(myTable) == "table" then
 		local myFlow = guiFrame.add( { type="flow", direction="vertical", style="tms_flow_compact" } )
-		myFlow.style.minimalwidth = glob.cfg.thunderBox_minimalWidth
-		myFlow.style.toppadding = flow_toppadding
-		myFlow.style.bottompadding = flow_bottompadding
+		myFlow.style.minimal_width = global.cfg.thunderBox_minimalWidth
+		myFlow.style.top_padding = flow_toppadding
+		myFlow.style.bottom_padding = flow_bottompadding
 		--$$ title of the list to label
 		local myElement = myFlow.add( { type= "label", style= "tms_label",
 				caption= string.format( "keys in %s table: #%d", tableName, #tableName ) } )
-		--myElement.style.minimalwidth = glob.cfg.thunderBox_minimalWidth
+		--myElement.style.minimal_width = global.cfg.thunderBox_minimalWidth
 		--$$ declare used variables
 		local casheTable = {} --$$ casheTable to store keys for fast concatinating
 		local indexer = 0
@@ -24,8 +24,8 @@ function transform_keys_to_labels(myTable, tableName, guiFrame)
 				--$$ print what we have in casheTable
 				myElement = myFlow.add( { type= "label", style= "tms_label",
 						caption= string.format( "%s,", table.concat(casheTable, mySeperator) ) } )
-				--myElement.style.minimalwidth = glob.cfg.thunderBox_minimalWidth
-				myElement.style.leftpadding = list_leftpadding
+				--myElement.style.minimal_width = global.cfg.thunderBox_minimalWidth
+				myElement.style.left_padding = list_leftpadding
 				--$$ clean casheTable
 				for k in pairs (casheTable) do
 					casheTable[k] = nil
@@ -41,11 +41,11 @@ function transform_keys_to_labels(myTable, tableName, guiFrame)
 		--$$ print what we have in table
 		myElement = myFlow.add( { type= "label", style= "tms_label",
 				caption= string.format( "%s", table.concat(casheTable, mySeperator) ) } )
-		--myElement.style.minimalwidth = glob.cfg.thunderBox_minimalWidth
-		myElement.style.leftpadding = list_leftpadding
+		--myElement.style.minimal_width = global.cfg.thunderBox_minimalWidth
+		myElement.style.left_padding = list_leftpadding
 	elseif tableName and guiFrame then
 		if myTable then
-			guiFrame.add( { type= "label", style= "tms_label", 
+			guiFrame.add( { type= "label", style= "tms_label",
 					caption= string.format( "%q is not a table; it = %s", tableName, tostring(myTable)) } )
 		else
 			guiFrame.add( { type= "label", style= "tms_label", caption= string.format( "table %s = nil", tableName ) } )
@@ -56,13 +56,13 @@ end
 function transform_keysvaluepairs_to_labels(myTable, tableName, guiFrame)
 	if myTable and tableName and guiFrame and type(myTable) == "table" then
 		local myFlow = guiFrame.add( { type="flow", direction="vertical", style="tms_flow_compact" } )
-		myFlow.style.minimalwidth = glob.cfg.thunderBox_minimalWidth
-		myFlow.style.toppadding = flow_toppadding
-		myFlow.style.bottompadding = flow_bottompadding
+		myFlow.style.minimal_width = global.cfg.thunderBox_minimalWidth
+		myFlow.style.top_padding = flow_toppadding
+		myFlow.style.bottom_padding = flow_bottompadding
 		--$$ title of the list to label
 		local myElement = myFlow.add( { type= "label", style= "tms_label",
 				caption= string.format( "key&value pairs in %s table: #%d", tableName, #tableName ) } )
-		--myElement.style.minimalwidth = glob.cfg.thunderBox_minimalWidth
+		--myElement.style.minimal_width = global.cfg.thunderBox_minimalWidth
 		for key, value in pairs(myTable) do
 				myElement = myFlow.add( { type= "label", style= "tms_label" } )
 				local valueType = type(value)
@@ -75,12 +75,12 @@ function transform_keysvaluepairs_to_labels(myTable, tableName, guiFrame)
 				else
 					myElement.caption = string.format( "%s = type %s", tostring(key), type(value) )
 				end
-				--myElement.style.minimalwidth = glob.cfg.thunderBox_minimalWidth
-				myElement.style.leftpadding = list_leftpadding
+				--myElement.style.minimal_width = global.cfg.thunderBox_minimalWidth
+				myElement.style.left_padding = list_leftpadding
 		end
 	elseif tableName and guiFrame then
 		if myTable then
-			guiFrame.add( { type= "label", style= "tms_label", 
+			guiFrame.add( { type= "label", style= "tms_label",
 					caption= string.format( "%q is not a table; it = %s", tableName, tostring(myTable)) } )
 		else
 			guiFrame.add( { type= "label", style= "tms_label", caption= string.format( "table %q = nil", tableName ) } )
@@ -91,13 +91,13 @@ end
 function transform_values_to_labels(myTable, tableName, guiFrame)
 	if myTable and tableName and guiFrame and type(myTable) == "table" then
 		local myFlow = guiFrame.add( { type="flow", direction="vertical", style="tms_flow_compact" } )
-		myFlow.style.minimalwidth = glob.cfg.thunderBox_minimalWidth
-		myFlow.style.toppadding = flow_toppadding
-		myFlow.style.bottompadding = flow_bottompadding
+		myFlow.style.minimal_width = global.cfg.thunderBox_minimalWidth
+		myFlow.style.top_padding = flow_toppadding
+		myFlow.style.bottom_padding = flow_bottompadding
 		--$$ title of the list to label
 		local myElement = myFlow.add( { type= "label", style= "tms_label",
 				caption= string.format( "values in %s table: #%d", tableName, #tableName ) } )
-		--myElement.style.minimalwidth = glob.cfg.thunderBox_minimalWidth
+		--myElement.style.minimal_width = global.cfg.thunderBox_minimalWidth
 		--$$ declare used variables
 		local casheTable = {} --$$ casheTable to store keys for fast concatinating
 		local indexer = 0
@@ -108,8 +108,8 @@ function transform_values_to_labels(myTable, tableName, guiFrame)
 				--$$ print what we have in casheTable
 				myElement = myFlow.add( { type= "label", style= "tms_label",
 						caption= string.format( "%s,", table.concat(casheTable, mySeperator) ) } )
-				--myElement.style.minimalwidth = glob.cfg.thunderBox_minimalWidth
-				myElement.style.leftpadding = list_leftpadding
+				--myElement.style.minimal_width = global.cfg.thunderBox_minimalWidth
+				myElement.style.left_padding = list_leftpadding
 				--$$ clean casheTable
 				for k in pairs (casheTable) do
 					casheTable[k] = nil
@@ -129,11 +129,11 @@ function transform_values_to_labels(myTable, tableName, guiFrame)
 		--$$ print what we have in table
 		myElement = myFlow.add( { type= "label", style= "tms_label",
 				caption= string.format( "%s", table.concat(casheTable, mySeperator) ) } )
-		--myElement.style.minimalwidth = glob.cfg.thunderBox_minimalWidth
-		myElement.style.leftpadding = list_leftpadding
+		--myElement.style.minimal_width = global.cfg.thunderBox_minimalWidth
+		myElement.style.left_padding = list_leftpadding
 	elseif tableName and guiFrame then
 		if myTable then
-			guiFrame.add( { type= "label", style= "tms_label", 
+			guiFrame.add( { type= "label", style= "tms_label",
 					caption= string.format( "%q is not a table; it = %s", tableName, tostring(myTable)) } )
 		else
 			guiFrame.add( { type= "label", style= "tms_label", caption= string.format( "table %s = nil", tableName ) } )

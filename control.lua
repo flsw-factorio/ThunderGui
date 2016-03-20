@@ -5,7 +5,7 @@ require "defines"
 require "config"
 require "scripts.configTools"
 
---$$ The base gui Frame 
+--$$ The base gui Frame
 require "superTopGui.superTopGui"
 require "superTopGui.stgTools"
 
@@ -22,8 +22,8 @@ require "interface"
 --[[ basic gui stuff ]]
 function ctrl_remove_gui(player, playerindex)
 	--$$ call OnRemoveGui from plugins
-	if glob.plugins then
-		for key, modDataTable in pairs(glob.plugins) do
+	if global.plugins then
+		for key, modDataTable in pairs(global.plugins) do
 			local interface = remote.interfaces[modDataTable.name]
 			if modDataTable.cb_onRemoveGui and interface and interface[modDataTable.cb_onRemoveGui] then
 				--player.print("calling remote OnRemoveGui")
@@ -44,7 +44,7 @@ end
 
 function ctrl_init_gui(player, playerindex)
 	if player.gui.top.superTopGui then return end -- superTopGui is already created
-	
+
 	--$$ destroy superGui to refresh existing interface in case of mod-update..
 	ctrl_remove_gui(player, playerindex)
 	--$$ create superGui, exit if failed
@@ -55,8 +55,8 @@ function ctrl_init_gui(player, playerindex)
 	tf_clockDisplay_create(player, playerindex)
 
 	--$$ call onCreateGui from plugins
-	if glob.plugins then
-		for key, modDataTable in pairs(glob.plugins) do
+	if global.plugins then
+		for key, modDataTable in pairs(global.plugins) do
 			--[[
 			player.print("found PlugIn: "..modDataTable.name)
 			for k,v in pairs(modDataTable) do
@@ -71,7 +71,7 @@ function ctrl_init_gui(player, playerindex)
 
 	--$$ inserting minimizeButton
 	tf_minimizeButton_create(player,playerindex)
-	
+
 	--$$ inserting speedbutton
 	tf_speedButton_create(player, playerindex)
 
@@ -87,8 +87,8 @@ function ctrl_do_update(player, playerindex)
 	tf_clockDisplay_update(player, playerindex)
 
 	--$$ update plugins
-	if glob.plugins then
-		for key, modDataTable in pairs(glob.plugins) do
+	if global.plugins then
+		for key, modDataTable in pairs(global.plugins) do
 			local interface = remote.interfaces[modDataTable.name]
 			if modDataTable.cb_onUpdateGui and interface and interface[modDataTable.cb_onUpdateGui] then
 				remote.call( modDataTable.name, modDataTable.cb_onUpdateGui, playerindex )
@@ -99,7 +99,7 @@ function ctrl_do_update(player, playerindex)
 end
 
 --[ event onInit ]
-game.oninit( function()
+script.on_init( function()
 	if not MOD_ENABLED then return end
 	--$$ initialize used variables
 	cfgt_check_global_cfg()
@@ -107,7 +107,7 @@ game.oninit( function()
 end)
 
 --[ event onLoad ]
-game.onload( function()
+script.on_load( function()
 	--$$ check if our mod has changed(installed a new version)
 	local checksDetectedOldData = false
 	if cfgt_check_global_cfg() then
@@ -127,33 +127,24 @@ game.onload( function()
 	end
 end)
 
---[ event onSave ]
-game.onsave(function()
-	--$$ (glob) remove gui before saving, if enabled.
-	if glob.cfg.removeGui_onSave then		
+
+--[ event onTick ]
+script.on_event(defines.events.on_tick,
+function(event)
+	--$$ Update gui stuff regularly, though not every single tick.
+	if game.tick % global.cfg.update_interval == 0 then
 		for playerindex, player in pairs(game.players) do
-			ctrl_remove_gui(player, playerindex)
+			ctrl_do_update(player, playerindex)
 		end
 	end
 end)
 
---[ event onTick ]
-game.onevent(defines.events.ontick, 
-function(event)
-	--$$ Update gui stuff regularly, though not every single tick.
-	if game.tick % glob.cfg.update_interval == 0 then
-		for playerindex, player in pairs(game.players) do
-			ctrl_do_update(player, playerindex)
-		end
-	end 
-end)
-
 --[ event onplayercreated ]
 --$$ multiplayer desync fix, remove warning, be carefull!! tip = create a backup before changing
-game.onevent(defines.events.onplayercreated, 
+script.on_event(defines.events.on_player_created,
 function(event)
 	--$$ give new player a config
-	cfgt_playerCfg_check(event.playerindex)
+	cfgt_playerCfg_check(event.player_index)
 
 	--$$ refresh gui (from sp to mp) TODO: retest if it's still needed
 	for locPlayerIndex, locPlayer in pairs(game.players) do
@@ -162,7 +153,7 @@ function(event)
 end)
 
 --[ event onguiclick ]
-game.onevent(defines.events.onguiclick, 
+script.on_event(defines.events.on_gui_click,
 function(event)
 	--$$ Check for button clicks
 	--$$ when a button is handled, the tf_#sampleName#Button_onguiclick(event) returns true

@@ -9,7 +9,7 @@ end
 
 function tf_thunderButton_create(player, playerindex)
 	--$$ button
-	local cfg = glob.playerCfg[playerindex]
+	local cfg = global.playerCfg[playerindex]
 	if cfg.showSettingsButton then
 		if player.gui.center.thunderBox then
 			stg_createActionButton(player, "tbnThunder", "Settings -")
@@ -22,7 +22,7 @@ function tf_thunderButton_create(player, playerindex)
 end
 
 function tf_thunderButton_onguiclick(event)
-	local playerindex = event.playerindex
+	local playerindex = event.player_index
 	local player = game.players[playerindex]
 
 	--$$ regular used buttons
@@ -30,7 +30,7 @@ function tf_thunderButton_onguiclick(event)
 		thunderBox_openClose(player, playerindex) --show_default_page()
 	elseif event.element.name == "tfrClose" then
 		thunderBox_close(player, playerindex)
-	elseif event.element.name == "tfrBack" then 
+	elseif event.element.name == "tfrBack" then
 		thunderBox_pageReturn(player, playerindex)
 	elseif event.element.name == "tfrRefreshPage" then
 		thunderBox_pageUpdate(player, playerindex)
@@ -60,27 +60,27 @@ function tf_thunderButton_onguiclick(event)
 
 	--$$ Select Settings table
 	elseif event.element.name == "tbnSetsPlyr" then
-		local cfg = glob.playerCfg[playerindex]
+		local cfg = global.playerCfg[playerindex]
 		if cfg and not cfg.viewPlayerSettings then
 			cfg.viewPlayerSettings = true
-		end 
+		end
 		thunderBox_pageUpdate(player, playerindex)
 
 	elseif event.element.name == "tbnSetsGlob" then
-		local cfg = glob.playerCfg[playerindex]
+		local cfg = global.playerCfg[playerindex]
 		if cfg and cfg.viewPlayerSettings then
 			cfg.viewPlayerSettings = false
-		end 
+		end
 		thunderBox_pageUpdate(player, playerindex)
 
-	--$$ toggle glob.cfg or glob.playerCfg and refresh gui and/or page 
+	--$$ toggle global.cfg or global.playerCfg and refresh gui and/or page
 	elseif event.element.name == "tbnToggleThunderButton" then
-		local cfg = glob.playerCfg[event.playerindex]
+		local cfg = global.playerCfg[event.player_index]
 		local updatePlayerOnly = true
 		if not cfg or not cfg.viewPlayerSettings then
-			cfg = glob.cfg
+			cfg = global.cfg
 			updatePlayerOnly = false
-		end 
+		end
 
 		cfg.showSettingsButton = not cfg.showSettingsButton
 		show_guiOptions_page(player, playerindex)
@@ -89,17 +89,17 @@ function tf_thunderButton_onguiclick(event)
 			stg_update(player, playerindex)
 		else
 			for locPlayerindex, locPlayer in pairs(game.players) do
-				glob.playerCfg[locPlayerindex].showSettingsButton = cfg.showSettingsButton
+				global.playerCfg[locPlayerindex].showSettingsButton = cfg.showSettingsButton
 				stg_update(locPlayer, locPlayerindex)
 			end
 		end
 	elseif event.element.name == "tbnTglClockEnabled" then
-		local cfg = glob.playerCfg[event.playerindex]
+		local cfg = global.playerCfg[event.player_index]
 		local updatePlayerOnly = true
 		if not cfg or not cfg.viewPlayerSettings then
-			cfg = glob.cfg
+			cfg = global.cfg
 			updatePlayerOnly = false
-		end 
+		end
 
 		cfg.showClock = not cfg.showClock
 		thunderBox_pageUpdate(player, playerindex)
@@ -112,23 +112,23 @@ function tf_thunderButton_onguiclick(event)
 		else
 			if cfg.showClock then
 				for locPlayerindex, locPlayer in pairs(game.players) do
-					glob.playerCfg[locPlayerindex].showClock = cfg.showClock
+					global.playerCfg[locPlayerindex].showClock = cfg.showClock
 					stg_update(locPlayer, locPlayerindex)
 				end
 			else
 				for locPlayerindex, locPlayer in pairs(game.players) do
-					glob.playerCfg[locPlayerindex].showClock = cfg.showClock
+					global.playerCfg[locPlayerindex].showClock = cfg.showClock
 					tf_clockDisplay_remove(locPlayer, locPlayerindex)
 				end
 			end
 		end
 	elseif event.element.name == "tbnTglSpeedBtnEnabled" then
-		local cfg = glob.playerCfg[event.playerindex]
+		local cfg = global.playerCfg[event.player_index]
 		local updatePlayerOnly = true
 		if not cfg or not cfg.viewPlayerSettings then
-			cfg = glob.cfg
+			cfg = global.cfg
 			updatePlayerOnly = false
-		end 
+		end
 
 		cfg.showSpeedButton = not cfg.showSpeedButton
 		thunderBox_pageUpdate(player, playerindex)
@@ -141,63 +141,63 @@ function tf_thunderButton_onguiclick(event)
 		else
 			if cfg.showSpeedButton then
 				for locPlayerindex, locPlayer in pairs(game.players) do
-					glob.playerCfg[locPlayerindex].showSpeedButton = cfg.showSpeedButton
+					global.playerCfg[locPlayerindex].showSpeedButton = cfg.showSpeedButton
 					stg_update(locPlayer, locPlayerindex)
 				end
 			else
 				for locPlayerindex, locPlayer in pairs(game.players) do
-					glob.playerCfg[locPlayerindex].showSpeedButton = cfg.showSpeedButton
+					global.playerCfg[locPlayerindex].showSpeedButton = cfg.showSpeedButton
 					tf_speedButton_remove(locPlayer, locPlayerindex)
 				end
 			end
 		end
 	elseif event.element.name == "tbnTglSafeMode" then
-		glob.cfg.safeMultiplayerMode = not glob.cfg.safeMultiplayerMode
+		global.cfg.safeMultiplayerMode = not global.cfg.safeMultiplayerMode
 		for locPlayerindex, locPlayer in pairs(game.players) do
-			if locPlayerindex == 1 then 
+			if locPlayerindex == 1 then
 				thunderBox_pageUpdate(locPlayer, locPlayerindex)
 			else
 				stg_update(locPlayer, locPlayerindex)
 			end
 		end
 	elseif event.element.name == "tbnTglDevMode" then
-		glob.cfg.developerMode = not glob.cfg.developerMode
+		global.cfg.developerMode = not global.cfg.developerMode
 		thunderBox_pageUpdate(player, playerindex)
 	elseif event.element.name == "tbnTglRemoveOnSave" then
-		glob.cfg.removeGui_onSave = not glob.cfg.removeGui_onSave
+		global.cfg.removeGui_onSave = not global.cfg.removeGui_onSave
 		thunderBox_pageUpdate(player, playerindex)
 	elseif event.element.name == "tbnTglRemLeftOfSuper" then
-		glob.cfg.removeElementsLeftOfSuperGui = not glob.cfg.removeElementsLeftOfSuperGui
-		if glob.cfg.removeElementsLeftOfSuperGui then
+		global.cfg.removeElementsLeftOfSuperGui = not global.cfg.removeElementsLeftOfSuperGui
+		if global.cfg.removeElementsLeftOfSuperGui then
 			stg_updateAll()
 		end
 		thunderBox_pageUpdate(player, playerindex)
 
 	--$$ TUps and TDowns
 	elseif event.element.name == "tbnTUpInterval" then
-		if glob.cfg.update_interval < 3600 then -- one minute
-			glob.cfg.update_interval = glob.cfg.update_interval + 10
+		if global.cfg.update_interval < 3600 then -- one minute
+			global.cfg.update_interval = global.cfg.update_interval + 10
 			thunderBox_pageUpdate(player, playerindex)
 		end
 	elseif event.element.name == "tbnTDnInterval" then
-		if glob.cfg.update_interval > 10 then
-			glob.cfg.update_interval = glob.cfg.update_interval - 10
+		if global.cfg.update_interval > 10 then
+			global.cfg.update_interval = global.cfg.update_interval - 10
 			thunderBox_pageUpdate(player, playerindex)
 		end
 	elseif event.element.name == "tbnTUpTBoxW" then
-		if glob.cfg.thunderBox_minimalWidth < 800 then -- one minute
-			glob.cfg.thunderBox_minimalWidth = glob.cfg.thunderBox_minimalWidth + 20
+		if global.cfg.thunderBox_minimalWidth < 800 then -- one minute
+			global.cfg.thunderBox_minimalWidth = global.cfg.thunderBox_minimalWidth + 20
 			thunderBox_pageUpdate(player, playerindex)
 		end
 	elseif event.element.name == "tbnTDnTBoxW" then
-		if glob.cfg.thunderBox_minimalWidth > 200 then
-			glob.cfg.thunderBox_minimalWidth = glob.cfg.thunderBox_minimalWidth - 20
+		if global.cfg.thunderBox_minimalWidth > 200 then
+			global.cfg.thunderBox_minimalWidth = global.cfg.thunderBox_minimalWidth - 20
 			thunderBox_pageUpdate(player, playerindex)
 		end
 
 	--$$ special buttons
 	elseif event.element.name == "tbnResetCfg" then
-		cfgt_cfg_reset(glob.cfg)
+		cfgt_cfg_reset(global.cfg)
 		cfgt_playerCfg_resetAllPlayers()
 		stg_updateAll()
 		thunderBox_pageUpdate(player, playerindex)
@@ -208,7 +208,7 @@ function tf_thunderButton_onguiclick(event)
 		end
 		tf_remove_allPlugins()
 		thunderBox_pageUpdate(player, playerindex)
-	
+
 	elseif event.element.name == "tbnDestroySuperGui" then
 		stg_update(player, playerindex)
 		if SLOW_GUI_UPDATE_MODE then
@@ -216,7 +216,7 @@ function tf_thunderButton_onguiclick(event)
 		end
 
 	--$$ Remove plugin and else/return false case
-	else 
+	else
 		local pos = string.find(event.element.name, "tbnRemPI_")
 		if pos == nil or pos ~= 1 then return false end --$$ did not recognize button
 

@@ -13,12 +13,12 @@ function tf_register_plugin( pluginName, pluginData )
 		return
 	end
 
-	if not glob.plugins then 
-		glob.plugins = {}
+	if not global.plugins then
+		global.plugins = {}
 	end
-	
+
 	--[[
-	if player then 
+	if player then
 		for k,v in pairs(pluginData) do
 			player.print( string.format( "%s = %q", tostring(k), v ) )
 		end
@@ -33,21 +33,21 @@ function tf_register_plugin( pluginName, pluginData )
 
 	--$$ data correct? update, refresh gui
 	if tf_check_plugin( DataTable ) then return end
-	
-	if player and glob.cfg.developerMode then 
+
+	if player and global.cfg.developerMode then
 		player.print( string.format( "ThunderGui: adding Plugin %q", pluginName ) )
 	end
-	glob.plugins[#glob.plugins+1] = DataTable
+	global.plugins[#global.plugins+1] = DataTable
 	stg_updateAll()
 end
 
 function tf_remove_plugin( pluginName )
 	local player = game.players[1]
-	if glob.plugins then
-		for key, pluginData in pairs(glob.plugins) do
+	if global.plugins then
+		for key, pluginData in pairs(global.plugins) do
 			if pluginData.name == pluginName then
 				if player then game.players[1].print( string.format( "ThunderGui: removing Plugin %q", pluginName ) ) end
-				glob.plugins[key] = nil
+				global.plugins[key] = nil
 				break
 			end
 		end
@@ -56,10 +56,10 @@ end
 
 function tf_get_pluginData( pluginName )
 	local player = game.players[1]
-	if glob.plugins then
-		for key, pluginData in pairs(glob.plugins) do
-			if pluginData.name == pluginName then				
-				return glob.plugins[key]
+	if global.plugins then
+		for key, pluginData in pairs(global.plugins) do
+			if pluginData.name == pluginName then
+				return global.plugins[key]
 			end
 		end
 	end
@@ -92,8 +92,8 @@ end
 
 function tf_check_allPlugins()
 	local removedPlugin = false
-	if glob.plugins then
-		for key, pluginData in pairs(glob.plugins) do
+	if global.plugins then
+		for key, pluginData in pairs(global.plugins) do
 			if tf_check_plugin( pluginData ) then
 				tf_remove_plugin( pluginData.name )
 				removedPlugin =  true
@@ -104,7 +104,7 @@ function tf_check_allPlugins()
 end
 
 function tf_remove_allPlugins()
-	if glob.plugins then
-		glob.plugins = nil;
+	if global.plugins then
+		global.plugins = nil;
 	end
 end

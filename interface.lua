@@ -1,4 +1,4 @@
-remote.addinterface("ThunderGui",
+remote.add_interface("ThunderGui",
 {
 	--$$ add/register plugin
 	registerPlugin =
@@ -29,7 +29,7 @@ remote.addinterface("ThunderGui",
 	end,
 
 	--$$ update Gui
-	updateGui = 
+	updateGui =
 	function(playerindex)
 		if playerindex and playerindex <= #game.players and playerindex > 0 and #game.players > 0 then
 			stg_update(game.players[playerindex], playerindex)
@@ -39,7 +39,7 @@ remote.addinterface("ThunderGui",
 	end,
 
 	--$$ re-create Gui	(Depricated,namechange:updateGui)
-	reCreateGui = 
+	reCreateGui =
 	function(playerindex)
 		if playerindex and playerindex <= #game.players and playerindex > 0 and #game.players > 0 then
 			stg_update(game.players[playerindex], playerindex)
@@ -49,21 +49,21 @@ remote.addinterface("ThunderGui",
 	end,
 
 	--$$ get config properties
-	getCfgProp = 
+	getCfgProp =
 	function(varName)
 		if varName and type(varName) == "string" then
-			return glob.cfg[varName]
+			return global.cfg[varName]
 		end
 		return nil
 	end,
 
 	--$$ activate or deactivate mod
-	setEnabled = 
+	setEnabled =
 	function(value)
 		if value then
-			glob.cfg.enabled = true
+			global.cfg.enabled = true
 		else
-			glob.cfg.enabled = false
+			global.cfg.enabled = false
 			stg_updateAll()
 		end
 	end

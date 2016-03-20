@@ -3,7 +3,7 @@
 function stg_updateAll()
 	for playerindex, player in pairs(game.players) do
 		if player.gui.top.superTopGui then
-			if glob.cfg.developerMode then
+			if global.cfg.developerMode then
 				player.print( "ThunderGui: updating superTopGui" )
 			end
 			player.gui.top.superTopGui.destroy()

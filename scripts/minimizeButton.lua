@@ -1,8 +1,8 @@
 local function tf_minimize_actionPanel(player,playerindex)
 	local stGui = player.gui.top.superTopGui
-	if glob.playerCfg[playerindex].minAP then
+	if global.playerCfg[playerindex].minAP then
 		--$$ re-open actionPanel
-		glob.playerCfg[playerindex].minAP = false
+		global.playerCfg[playerindex].minAP = false
 		stg_update(player, playerindex)
 		--[[
 		if stGui then
@@ -12,7 +12,7 @@ local function tf_minimize_actionPanel(player,playerindex)
 		end
 		--]]
 	else
-		glob.playerCfg[playerindex].minAP = true
+		global.playerCfg[playerindex].minAP = true
 		--$$ close actionPanel
 		if stGui then
 			--$$ panel
@@ -33,14 +33,14 @@ function tf_minimizeButton_create(player,playerindex)
 	--$$ memory
 	local stGui = player.gui.top.superTopGui
 	local txt = "<<"
-	if glob.playerCfg[playerindex].minAP then
+	if global.playerCfg[playerindex].minAP then
 		txt = ">>"
 		if stGui and stGui.stg_actionPanel then
 			stGui.stg_actionPanel.destroy()
 		end
 	else
-		glob.minimizedPanel = {}
-		glob.minimizedPanel[playerindex] = false
+		global.minimizedPanel = {}
+		global.minimizedPanel[playerindex] = false
 	end
 
 	--$$ create button
@@ -58,8 +58,8 @@ end
 
 function tf_minimizeButton_onguiclick(event)
 	if event.element.name == "tbnMinimize" then
-		tf_minimize_actionPanel(game.players[event.playerindex], event.playerindex)
-	else 
+		tf_minimize_actionPanel(game.players[event.player_index], event.player_index)
+	else
 		return false
 	end
 	return true

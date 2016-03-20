@@ -1,7 +1,7 @@
 --[[ PUBLIC init & remove gui superGui ]]function stg_remove(player)
 	if player.gui.top.superTopGui then
 		local top = player.gui.top
-		if glob.cfg.developerMode then
+		if global.cfg.developerMode then
 			player.print( "ThunderGui: removing superTopGui" )
 		end
 		top.superTopGui.destroy()
@@ -10,10 +10,10 @@ end
 
 function stg_create(player)
 	--$$ system-ready state check
-	--if not player then return end --$$ if not player_found_in_the_game then return -or- if in_menus then return 
+	--if not player then return end --$$ if not player_found_in_the_game then return -or- if in_menus then return
 	local top = player.gui.top
 	if top.superTopGui then return end --$$ if already_created then return
-	if glob.cfg.developerMode then
+	if global.cfg.developerMode then
 		player.print( "ThunderGui: (re-)creating superTopGui" )
 	end
 
@@ -33,9 +33,9 @@ function stg_create(player)
 				caption= "", direction= "horizontal"} )
 
 	--$$ destroy leading frames
-	if glob.cfg.removeElementsLeftOfSuperGui then
+	if global.cfg.removeElementsLeftOfSuperGui then
 		--local framePosition = 0
-		for index, ElementName in pairs(top.childrennames) do
+		for index, ElementName in pairs(top.children_names) do
 			if ElementName == "superTopGui" then
 				--framePosition = index
 				break;
@@ -43,7 +43,7 @@ function stg_create(player)
 			--player.print( string.format( "%s = %s", index, ElementName ) )
 			local element = top[ElementName]
 			if element then
-				if glob.cfg.developerMode then
+				if global.cfg.developerMode then
 					player.print( string.format( "ThunderGui: calling: gui.top.%s.destroy()", ElementName ) )
 				end
 				element.destroy()
