@@ -1,0 +1,11 @@
+
+{
+  "name": "ThunderGui",
+  "version": "0.2.4",
+  "title": "ThunderGui",
+  "author": "Mr. Thunder_Tw",
+  "contact": "",
+  "homepage": "",
+  "description": "Handy topGui that's extendable by using the plugin-interface. By default it displays total-play-time and 2 action-buttons: for changing speed and settings. Works in Multiplayer!",
+  "dependencies": ["base >= 0.12.27"]
+}
